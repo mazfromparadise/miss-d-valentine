@@ -18,13 +18,14 @@
 
   .card {
     background: white;
-    padding: 40px;
+    padding: 30px;
     border-radius: 22px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.25);
     max-width: 420px;
     width: 90%;
     text-align: center;
     animation: pop 0.6s ease;
+    z-index: 2;
   }
 
   @keyframes pop {
@@ -32,9 +33,16 @@
     100% { transform: scale(1); opacity: 1; }
   }
 
+  .gif {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    margin-bottom: 15px;
+  }
+
   h1 {
     color: #ff4d6d;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
   }
 
   p {
@@ -44,7 +52,7 @@
 
   button {
     padding: 12px 28px;
-    margin: 12px;
+    margin: 10px;
     font-size: 16px;
     border: none;
     border-radius: 30px;
@@ -66,16 +74,19 @@
     background: #ddd;
   }
 
-  .heart {
+  /* Slideshow photos */
+  .memory {
     position: absolute;
-    color: #ff4d6d;
-    font-size: 20px;
-    animation: float 6s linear infinite;
+    width: 140px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    animation: fadeIn 0.8s ease;
+    z-index: 1;
   }
 
-  @keyframes float {
-    0% { transform: translateY(100vh); opacity: 1; }
-    100% { transform: translateY(-10vh); opacity: 0; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
   }
 </style>
 </head>
@@ -84,17 +95,16 @@
 
 <!-- 🎵 MUSIC -->
 <audio id="noMusic" loop>
-  <!-- Replace with your sad / dramatic song -->
-  <source src="NO_SONG_URL_HERE.mp3" type="audio/mpeg">
+  <source src="music/no.mp3" type="audio/mpeg">
 </audio>
 
 <audio id="yesMusic" loop>
-  <!-- Replace with your happy / romantic song -->
-  <source src="YES_SONG_URL_HERE.mp3" type="audio/mpeg">
+  <source src="music/yes.mp3" type="audio/mpeg">
 </audio>
 
 <!-- 💌 PAGES -->
 <div class="card" id="page1">
+  <img src="gifs/start.gif" class="gif">
   <h1>Miss D 💖</h1>
   <p>Will you be my Valentine? 💕</p>
   <button class="yes" onclick="yes()">Yes 💘</button>
@@ -102,6 +112,7 @@
 </div>
 
 <div class="card" id="page2" style="display:none;">
+  <img src="gifs/sure.gif" class="gif">
   <h1>Are you sure? 🥺</h1>
   <p>Think carefully…</p>
   <button class="yes" onclick="yes()">Yes 💖</button>
@@ -109,6 +120,7 @@
 </div>
 
 <div class="card" id="page3" style="display:none;">
+  <img src="gifs/extreme.gif" class="gif">
   <h1>Extremely sure?? 😭</h1>
   <p>This decision has consequences…</p>
   <button class="yes" onclick="yes()">Yes 💕</button>
@@ -116,6 +128,7 @@
 </div>
 
 <div class="card" id="page4" style="display:none;">
+  <img src="gifs/final.gif" class="gif">
   <h1>No more running 😏</h1>
   <p>Will you be my Valentine, Miss D? 💘</p>
   <button class="yes" onclick="yes()">YES 💍💖</button>
@@ -124,7 +137,7 @@
 <div class="card" id="pageYes" style="display:none;">
   <h1>She said YES!! 🎉💖</h1>
   <p>Miss D, you truly have my heart 🥰</p>
-  <p>I can’t wait to celebrate love, laughter, and us ❤️</p>
+  <p>I can’t wait to keep making memories with you ❤️</p>
   <p>Happy Valentine’s Day 💘</p>
 </div>
 
@@ -133,6 +146,16 @@
   const noMusic = document.getElementById("noMusic");
   const yesMusic = document.getElementById("yesMusic");
   let noMusicStarted = false;
+
+  const photos = [
+    "photos/pic1.jpg",
+    "photos/pic2.jpg",
+    "photos/pic3.jpg",
+    "photos/pic4.jpg"
+  ];
+
+  let photoIndex = 0;
+  let slideshowInterval;
 
   function playNoMusic() {
     if (!noMusicStarted) {
@@ -145,32 +168,32 @@
     document.querySelectorAll('.card').forEach(c => c.style.display = 'none');
     document.getElementById('page' + page).style.display = 'block';
     playNoMusic();
-    spawnHearts();
   }
 
   function yes() {
     noMusic.pause();
     noMusic.currentTime = 0;
-
     yesMusic.play();
 
     document.querySelectorAll('.card').forEach(c => c.style.display = 'none');
     document.getElementById('pageYes').style.display = 'block';
 
-    spawnHearts(30);
+    startSlideshow();
   }
 
-  function spawnHearts(count = 12) {
-    for (let i = 0; i < count; i++) {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.innerHTML = "❤️";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
-      document.body.appendChild(heart);
+  function startSlideshow() {
+    slideshowInterval = setInterval(() => {
+      if (photoIndex >= photos.length) return;
 
-      setTimeout(() => heart.remove(), 6000);
-    }
+      const img = document.createElement("img");
+      img.src = photos[photoIndex];
+      img.className = "memory";
+      img.style.left = Math.random() * 80 + "vw";
+      img.style.top = Math.random() * 80 + "vh";
+
+      document.body.appendChild(img);
+      photoIndex++;
+    }, 2000);
   }
 </script>
 
