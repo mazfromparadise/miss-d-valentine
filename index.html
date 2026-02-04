@@ -19,8 +19,8 @@
   .card {
     background: white;
     padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    border-radius: 22px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
     max-width: 420px;
     width: 90%;
     text-align: center;
@@ -28,7 +28,7 @@
   }
 
   @keyframes pop {
-    0% { transform: scale(0.8); opacity: 0; }
+    0% { transform: scale(0.85); opacity: 0; }
     100% { transform: scale(1); opacity: 1; }
   }
 
@@ -39,11 +39,12 @@
 
   p {
     color: #444;
+    font-size: 16px;
   }
 
   button {
-    padding: 12px 26px;
-    margin: 10px;
+    padding: 12px 28px;
+    margin: 12px;
     font-size: 16px;
     border: none;
     border-radius: 30px;
@@ -53,7 +54,7 @@
 
   button:hover {
     transform: scale(1.08);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
   }
 
   .yes {
@@ -79,13 +80,20 @@
 </style>
 </head>
 
-<body onclick="startMusic()">
+<body>
 
-<!-- Background Music -->
-<audio id="music" loop>
-  <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+<!-- 🎵 MUSIC -->
+<audio id="noMusic" loop>
+  <!-- Replace with your sad / dramatic song -->
+  <source src="NO_SONG_URL_HERE.mp3" type="audio/mpeg">
 </audio>
 
+<audio id="yesMusic" loop>
+  <!-- Replace with your happy / romantic song -->
+  <source src="YES_SONG_URL_HERE.mp3" type="audio/mpeg">
+</audio>
+
+<!-- 💌 PAGES -->
 <div class="card" id="page1">
   <h1>Miss D 💖</h1>
   <p>Will you be my Valentine? 💕</p>
@@ -101,44 +109,55 @@
 </div>
 
 <div class="card" id="page3" style="display:none;">
-  <h1>EXTREMELY sure?? 😭</h1>
-  <p>This is your last chance…</p>
+  <h1>Extremely sure?? 😭</h1>
+  <p>This decision has consequences…</p>
   <button class="yes" onclick="yes()">Yes 💕</button>
   <button class="no" onclick="nextPage(4)">No 😭</button>
 </div>
 
 <div class="card" id="page4" style="display:none;">
-  <h1>No more escape 😏</h1>
+  <h1>No more running 😏</h1>
   <p>Will you be my Valentine, Miss D? 💘</p>
   <button class="yes" onclick="yes()">YES 💍💖</button>
 </div>
 
 <div class="card" id="pageYes" style="display:none;">
-  <h1>YAYYYYY!! 🎉💖</h1>
-  <p>You just made my heart so happy 🥰</p>
-  <p>Happy Valentine’s Day, Miss D ❤️</p>
+  <h1>She said YES!! 🎉💖</h1>
+  <p>Miss D, you truly have my heart 🥰</p>
+  <p>I can’t wait to celebrate love, laughter, and us ❤️</p>
+  <p>Happy Valentine’s Day 💘</p>
 </div>
 
+<!-- 🧠 LOGIC -->
 <script>
-  let musicStarted = false;
+  const noMusic = document.getElementById("noMusic");
+  const yesMusic = document.getElementById("yesMusic");
+  let noMusicStarted = false;
 
-  function startMusic() {
-    if (!musicStarted) {
-      document.getElementById("music").play();
-      musicStarted = true;
+  function playNoMusic() {
+    if (!noMusicStarted) {
+      noMusic.play();
+      noMusicStarted = true;
     }
   }
 
-  function nextPage(n) {
+  function nextPage(page) {
     document.querySelectorAll('.card').forEach(c => c.style.display = 'none');
-    document.getElementById('page' + n).style.display = 'block';
+    document.getElementById('page' + page).style.display = 'block';
+    playNoMusic();
     spawnHearts();
   }
 
   function yes() {
+    noMusic.pause();
+    noMusic.currentTime = 0;
+
+    yesMusic.play();
+
     document.querySelectorAll('.card').forEach(c => c.style.display = 'none');
     document.getElementById('pageYes').style.display = 'block';
-    spawnHearts(25);
+
+    spawnHearts(30);
   }
 
   function spawnHearts(count = 12) {
