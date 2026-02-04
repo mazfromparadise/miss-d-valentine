@@ -74,31 +74,14 @@
     background: #ddd;
   }
 
-  /* PHOTO GRID */
-  .photo-grid {
+  /* Photos */
+  .memory {
     position: absolute;
-    inset: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 30px;
-    padding: 40px;
-    pointer-events: none;
-  }
-
-  .photo-grid img {
-    width: 100%;
-    aspect-ratio: 1 / 1.2;
-    object-fit: cover;
-    border-radius: 18px;
-    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
-    opacity: 0;
-    transform: scale(0.8);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-
-  .photo-grid img.show {
-    opacity: 1;
-    transform: scale(1);
+    width: 140px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    animation: fadeIn 0.8s ease;
+    z-index: 1;
   }
 
   @keyframes fadeIn {
@@ -198,14 +181,11 @@
     startSlideshow();
   }
 
-  function startPhotoSlideshow() {
-    const photos = document.querySelectorAll("#photoGrid img");
-    let index = 0;
+  function startSlideshow() {
+    const yesCard = document.getElementById("pageYes");
 
-    setInterval(() => {
-      if (index < photos.length) {
-        photos[index].classList.add("show");
-        index++;
+    slideshowInterval = setInterval(() => {
+      if (photoIndex >= photos.length) return;
 
       const img = document.createElement("img");
       img.src = photos[photoIndex];
@@ -240,7 +220,3 @@
 
 </body>
 </html>
-
-
-
-
