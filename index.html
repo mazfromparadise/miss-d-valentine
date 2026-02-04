@@ -25,7 +25,7 @@
     width: 90%;
     text-align: center;
     animation: pop 0.6s ease;
-    z-index: 2;
+    z-index: 5;
   }
 
   @keyframes pop {
@@ -74,7 +74,7 @@
     background: #ddd;
   }
 
-  /* Slideshow photos */
+  /* Photos */
   .memory {
     position: absolute;
     width: 140px;
@@ -85,7 +85,7 @@
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.8); }
+    from { opacity: 0; transform: scale(0.85); }
     to { opacity: 1; transform: scale(1); }
   }
 </style>
@@ -182,14 +182,35 @@
   }
 
   function startSlideshow() {
+    const yesCard = document.getElementById("pageYes");
+
     slideshowInterval = setInterval(() => {
       if (photoIndex >= photos.length) return;
 
       const img = document.createElement("img");
       img.src = photos[photoIndex];
       img.className = "memory";
-      img.style.left = Math.random() * 80 + "vw";
-      img.style.top = Math.random() * 80 + "vh";
+
+      let placed = false;
+
+      while (!placed) {
+        const x = Math.random() * (window.innerWidth - 160);
+        const y = Math.random() * (window.innerHeight - 160);
+
+        const cardRect = yesCard.getBoundingClientRect();
+
+        const overlaps =
+          x < cardRect.right &&
+          x + 140 > cardRect.left &&
+          y < cardRect.bottom &&
+          y + 140 > cardRect.top;
+
+        if (!overlaps) {
+          img.style.left = x + "px";
+          img.style.top = y + "px";
+          placed = true;
+        }
+      }
 
       document.body.appendChild(img);
       photoIndex++;
