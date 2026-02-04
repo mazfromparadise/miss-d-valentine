@@ -198,11 +198,14 @@
     startSlideshow();
   }
 
-  function startSlideshow() {
-    const yesCard = document.getElementById("pageYes");
+  function startPhotoSlideshow() {
+    const photos = document.querySelectorAll("#photoGrid img");
+    let index = 0;
 
-    slideshowInterval = setInterval(() => {
-      if (photoIndex >= photos.length) return;
+    setInterval(() => {
+      if (index < photos.length) {
+        photos[index].classList.add("show");
+        index++;
 
       const img = document.createElement("img");
       img.src = photos[photoIndex];
@@ -237,4 +240,5 @@
 
 </body>
 </html>
+
 
