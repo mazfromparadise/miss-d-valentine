@@ -25,7 +25,8 @@
     width: 90%;
     text-align: center;
     animation: pop 0.6s ease;
-    z-index: 2;
+    z-index: 5;
+    position: relative;
   }
 
   @keyframes pop {
@@ -74,10 +75,10 @@
     background: #ddd;
   }
 
-  /* Slideshow photos */
+  /* 📸 MEMORY PHOTOS */
   .memory {
     position: absolute;
-    width: 140px;
+    width: 130px;
     border-radius: 14px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     animation: fadeIn 0.8s ease;
@@ -85,7 +86,7 @@
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.8); }
+    from { opacity: 0; transform: scale(0.85); }
     to { opacity: 1; transform: scale(1); }
   }
 </style>
@@ -151,11 +152,31 @@
     "photos/pic1.jpg",
     "photos/pic2.jpg",
     "photos/pic3.jpg",
-    "photos/pic4.jpg"
+    "photos/pic4.jpg",
+    "photos/pic5.jpg",
+    "photos/pic6.jpg",
+    "photos/pic7.jpg",
+    "photos/pic8.jpg",
+    "photos/pic9.jpg",
+    "photos/pic10.jpg"
+  ];
+
+  /* 📍 10 SAFE POSITIONS AROUND THE CARD */
+  const positions = [
+    { top: "6%", left: "12%" },
+    { top: "6%", left: "70%" },
+    { top: "22%", left: "4%" },
+    { top: "22%", left: "82%" },
+    { top: "45%", left: "2%" },
+    { top: "45%", left: "84%" },
+    { top: "68%", left: "10%" },
+    { top: "68%", left: "72%" },
+    { top: "82%", left: "28%" },
+    { top: "82%", left: "58%" }
   ];
 
   let photoIndex = 0;
-  let slideshowInterval;
+  let positionIndex = 0;
 
   function playNoMusic() {
     if (!noMusicStarted) {
@@ -182,17 +203,21 @@
   }
 
   function startSlideshow() {
-    slideshowInterval = setInterval(() => {
+    setInterval(() => {
       if (photoIndex >= photos.length) return;
 
       const img = document.createElement("img");
       img.src = photos[photoIndex];
       img.className = "memory";
-      img.style.left = Math.random() * 80 + "vw";
-      img.style.top = Math.random() * 80 + "vh";
+
+      const pos = positions[positionIndex];
+      img.style.top = pos.top;
+      img.style.left = pos.left;
 
       document.body.appendChild(img);
+
       photoIndex++;
+      positionIndex++;
     }, 2000);
   }
 </script>
